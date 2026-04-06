@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Сервіс бази даних
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: homework_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Сервіс Python застосунку
+  app:
+    build: .
+    env_file:
+      - .env  
+    depends_on:
+      - db
+    ports:
+      - "5000:5000" 
+
+volumes:
+  postgres_data:
